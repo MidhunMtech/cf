@@ -1,0 +1,51 @@
+body {
+	margin: 0;
+	padding-top: 100px;
+	text-align: center;
+	overflow: hidden;
+	border-sizing: border-boxing;
+	height: 100vh;
+	background: rgb(169,175,169);
+	background: linear-gradient(339deg, rgba(169,175,169,1) 28%, rgba(137,201,137,1) 34%, rgba(214,218,214,1) 76%);
+}
+label {
+	font-size: 20px;
+	font-weight: bold;	
+}
+input {
+	border: 1px solid black;
+	border-radius: 20px;
+	pointer: cursor;
+	color: white;
+	background-color: #a9afa9;
+	padding: 8px 20px;
+	text-align: center;
+}
+input[type="text"]::placeholder {
+	color: #fff;
+	font-size: 16px;
+}
+input[type="text"] {
+    caret-color: black;
+    caret-width: 5px; 
+}
+button {
+	background:  linear-gradient(339deg, rgba(100,106,100,1) 34%, rgba(58,93,58,1) 66%);
+	border: none;
+	border-radius: 15px;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 5px 20px;
+	cursor: pointer;
+    	width: 150px;
+    	height: 40px;
+}
+p {
+	font-size: 18px;
+	font-weight: bold;
+	color: #582626;
+}
+span {
+	font-size: 20px;
+	color: #000;
+}

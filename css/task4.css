@@ -1,0 +1,37 @@
+body {
+	font-size: 20px;
+	height: 100vh;
+}
+.content-1 {
+	margin-left: 500px;
+}
+span {
+	font-weight: bold;
+}
+.content-2 {
+	background: #d6dad6;
+	padding: 10px 500px;
+}
+.sunday {
+	color: red;
+}
+.monday {
+	color: green;
+}
+.tuesday {
+	color: orange;
+}
+.wednesday {
+	color: yellow;
+}
+.thursday {
+	color: black;
+	font-weight: bold;
+}
+.friday {
+	color: blue;
+}
+.saturday {
+	color: red;
+	font-weight: bold;
+}
