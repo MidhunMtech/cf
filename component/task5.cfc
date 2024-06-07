@@ -34,4 +34,102 @@
         	<cfreturn dateDiff("d", now(), nextBirthDay)>
     	</cffunction>
 
+
+	<cfscript>
+		public struct function calculateAgesScript (
+			required string userDOB,
+			required string motherDOB ) {
+				
+			result = {};
+			userDOB = parseDateTime(arguments.userDOB, "dd-mm-yyy");
+			motherDOB = parseDateTime(arguments.motherDOB, "dd-mm-yyy");
+			today = now();
+			
+			result.userAge = dateDiff("yyyy", userDOB, today);
+			result.motherAge = dateDiff("yyyy", motherDOB, today);
+			result.motherDeliveryAge = result.motherAge - result.userAge;
+
+			result.userDayLeft = daysLeftScript(userDOB);
+			result.motherDayLeft = daysLeftScript(motherDOB);
+
+			return result;
+		}
+		private numeric function daysLeftScript (
+				required date dob) {
+			
+			nextBirthYear = year(now());
+			if (month(now()) GT month(dob) OR (month(now()) EQ month(dob) AND day(now()) GT day(dob))) {
+				nextBirthYear = year(now()) + 1;
+			}
+			nextBirthDay = createDate(nextBirthYear, month(dob), day(dob));
+
+			return dateDiff("d", now(), nextBirthDay);
+		}
+
+
+
+
+		public string function keyValue(
+			required string text1,
+			required string text2) {
+			
+			myStruct = {};
+			
+			StructInsert(myStruct, text1, text2)
+			
+			writeDump(var = myStruct);
+		};
+
+	
+
+
+		public struct function task7(
+			required string text1,
+			required string text2) 
+		{
+			if (!structKeyExists(session, "myStruct")) {
+    				session.myStruct = structNew();
+			}
+			session.myStruct[text1] = text2;
+
+			return session.myStruct;	
+		};	
+
+
+
+
+		public struct function task9(
+			required string text1,
+			required string text2)
+		{
+			if(!structKeyExists(session, "myStruct")) {
+				session.myStruct = {};
+			}
+			
+			if(structKeyExists(session.myStruct, text1)) {
+				writeOutput("Key already exists! <br>");
+			} else {
+				session.myStruct[text1] = text2;
+			}
+
+			return session.myStruct;
+		};
+
+
+
+		public struct function task10(
+			required string text1,
+			required string text2) 
+		{
+			if (!structKeyExists(session, "myStruct")) {
+    				session.myStruct = {};
+				//session.myStruct = structNew("linked");
+			}
+			session.myStruct[text1] = text2;
+			
+			return session.myStruct;
+		};
+
+	</cfscript>
+
 </cfcomponent>
