@@ -129,24 +129,49 @@
 		<cfreturn details>
 	</cffunction>
 
+	<cffunction name="multiply" returnType="numeric" access="public">
+		<cfargument name="num1" type="numeric" required="true">
+		<cfargument name="num2" type="numeric" required="true">
+		<cfargument name="num3" type="numeric" required="false" default="1">
+		<cfargument name="num4" type="numeric" required="false" default="1">
+
+		<cfreturn arguments.num1 * arguments.num2 * arguments.num3 * arguments.num4 />
+	</cffunction>
+	
+	<cffunction name="squarePattern" returnType="string" access="public">
+		<cfargument name="number" type="numeric" required="true">
+
+		<cfset local.result = "" />
+		<cfloop from="1" to="#arguments.number#" index="i">
+			<cfset local.num = "#i#" />
+			
+			<cfloop from="1" to="#arguments.number#" index="j">
+				<cfset local.result &= local.num />
+				<cfset local.result &= " " />
+				<cfset local.num += 3 />
+			</cfloop>
+			<cfset local.result &= "<br><br>" />
+		</cfloop>
+		<cfreturn local.result />
+	</cffunction>
+	
+	
+	<cffunction name="task17" type="string" access="public">
+		<cfargument name="num" type="any" required="true">
+			<cfset local.output = "" />
+			<cfif isNumeric(arguments.num)>
+				<cfloop from="1" to="#arguments.num#" index="i">
+					<cfif #i# MOD 2 EQ 0>
+						<cfset local.output &= "<span class='green' >#i#, </span>" />
+					<cfelse>
+						<cfset local.output &= "<span class='blue' >#i#, </span>" />
+					</cfif>
+				</cfloop>
+			<cfelse>
+				<cfset local.output &= "<p class='blue'>PLEASE ENTER A NUMBER!</p>" />
+			</cfif>
+		<cfreturn local.output />
+	</cffunction>
+
 </cfcomponent>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

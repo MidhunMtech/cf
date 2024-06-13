@@ -12,7 +12,8 @@
 
 		<cfquery name="nthRow" datasource="cfTask">
     			SELECT 
-				firstname, lastname
+				firstname,
+				lastname
     			FROM (
         			SELECT 
 					firstname, 
@@ -49,6 +50,26 @@
 
 	</cffunction>
 
+
+	<cffunction name="task18" returnType="query" access="public">
+		<cfset myQuery = QueryNew("ID, Name, email","Integer, Varchar, Varchar") />
+
+		<cfset QueryAddRow(myQuery, 3) />
+
+		<cfset QuerySetCell(myQuery, "ID", 1, 1) />
+		<cfset QuerySetCell(myQuery, "Name", "Midhun M", 1) />
+		<cfset QuerySetCell(myQuery, "email", "midhun@gmail.com", 1) />
+
+		<cfset QuerySetCell(myQuery, "ID", 2, 2) />
+		<cfset QuerySetCell(myQuery, "Name", "Ajay", 2) />
+		<cfset QuerySetCell(myQuery, "email", "ajay@gmail.com", 2) />
+
+		<cfset QuerySetCell(myQuery, "ID", 3, 3) />
+		<cfset QuerySetCell(myQuery, "Name", "prajwal", 3) />
+		<cfset QuerySetCell(myQuery, "email", "prajwal@gmail.com", 3) />
+		
+		<cfreturn myQuery>
+	</cffunction>
 
 	<cfscript>
 		public query function task12Script(number) {
@@ -95,6 +116,27 @@
 			}
 
 			return result;
+		}
+		
+		public query function task18Script() {
+		
+			myQuery = QueryNew("ID, Name, email", "Integer, Varchar, Varchar");
+			
+			QueryAddRow(myQuery, 3);
+			
+			QuerySetCell(myQuery, "ID", 1, 1);
+			QuerySetCell(myQuery, "Name", "ColdFusion", 1);
+			QuerySetCell(myQuery, "email", "coldfusion@gmail.com", 1);
+			
+			QuerySetCell(myQuery, "ID", 2, 2);
+			QuerySetCell(myQuery, "Name", "React", 2);
+			QuerySetCell(myQuery, "email", "react@gmail.com", 2);
+			
+			QuerySetCell(myQuery, "ID", 3, 3);
+			QuerySetCell(myQuery, "Name", "Python", 3);
+			QuerySetCell(myQuery, "email", "python@gmail.com", 3);
+			
+			return myQuery;
 		}
 
 	</cfscript>
