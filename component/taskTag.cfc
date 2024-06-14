@@ -172,6 +172,78 @@
 			</cfif>
 		<cfreturn local.output />
 	</cffunction>
+	
+	
+	<cffunction name="task19Cookie" returnType="numeric" access="public">
+		<cfif structKeyExists(cookie,"VisitsCounter")>
+			<cfset local.cookieValue = cookie.VisitsCounter + 1 />
+		<cfelse>
+			<cfset local.cookieValue = 1 />
+		</cfif>
+		
+		<cfset cookie.VisitsCounter = local.cookieValue />
+		<cfset cookieExpiry = createTimeSpan(0, 0, 1, 0) />
+		<cfcookie name="VisitsCounter" value="#local.cookieValue#" expires="#cookieExpiry#" />
+		
+		<cfreturn local.cookieValue />
+	</cffunction>
+	
+	
+	<cffunction name="task20" access="public" returnType="string" hint="Email and Captcha Validation">
+		<cfargument name="mail" type="string" required="true">
+		<cfargument name="captchaInput" type="string" required="true">
+		<cfargument name="captchaText" type="string" required="true">
+		
+		<cfparam name="arguments.captchaInput"  default="" />
+		<cfparam name="arguments.mail"  default="" />
+		
+		<cfset local.output = "" />
+		<cfif isValid("email", arguments.mail) >
+			<cfif arguments.captchaInput EQ arguments.captchaText >
+				<cflocation url="second.cfm" addtoken="Yes">
+			<cfelse>
+				<cfset local.output &= "<br><b>INVALID CAPTCHA</b>. Please try again." />
+			</cfif>
+		<cfelse>
+			<cfset local.output &= "<br><b>INVALID EMAIL</b>. Please try again." />
+		</cfif>
+		
+		<cfreturn local.output />
+	</cffunction>
+	
+	<cffunction name="captcha" returnType="string" access="public">
+		<cfset local.captchaText = "" />
+		<cfloop from="1" to="6" index="i">
+			<cfset local.captchaText &= chr(randRange(65,90)) />
+		</cfloop>
+		
+		<cfreturn local.captchaText />
+	</cffunction>
 
 </cfcomponent>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

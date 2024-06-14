@@ -67,4 +67,69 @@ component {
 			}
 			return local.result;
 		}
+		
+		
+		public string function task17Script (
+			required any num) {
+			
+			local.output = "";
+			if (isNumeric(arguments.num)) {
+				for (i = 1; i <= #arguments.num#; i++) {
+					if (#i# MOD 2 EQ 0) {
+						local.output &= "<span class='green'>#i#, </span>";
+					} else {
+						local.output &= "<span class='blue'>#i#, <span>" ;
+					}
+				}
+			} else {
+				local.output &= "<p class='blue'>Enter Only Numeric Values</p>"
+			}
+			
+			return local.output;
+		}
+		
+		public numeric function cookie () {
+			if (structKeyExists(cookie, "VisitsCounter")) {
+				local.cookieValue = Cookie.VisitsCounter + 1;
+			} else {
+				local.cookieValue = 1;
+			}
+			Cookie.VisitsCounter = local.cookieValue;
+			
+			cookieExpiry = createTimeSpan(0,0,1,0);
+			cfcookie(name="VisitsCounter", value=local.cookieValue, expires=cookieExpiry);
+			
+			return local.cookieValue;
+		}
+		
+		public string function task20Script (
+			required string mail,
+			required string captchaInput,
+			required string captchaText) {
+				param arguments.mail = "";
+				param arguments.captchaInput = "";
+				param arguments.captchaText = "";  
+				local.output = "";
+				if (isValid("email", arguments.mail)) {
+					if (arguments.captchaInput EQ arguments.captchaText) {
+						location(url="second.cfm", addtoken="Yes");
+					} else {
+						local.output &= "<br><b>INVALID CAPTCHA</b>. Please try again.";
+					}
+				} else {
+					local.output &= "<br><b>INVALID EMAIL</b>. Please try again.";
+				}
+				
+			return local.output;
+		}
+		
+		public string function captcha() {
+			local.captchaText = "" ;
+			for ( i = 1; i <= 6; i++ ) {
+				local.captchaText &= chr(randRange(65,90));
+			}
+			
+		return local.captchaText;
+		}
+		
 }
