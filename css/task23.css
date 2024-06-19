@@ -1,0 +1,11 @@
+body {
+	font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+}
+.required {
+	color: red;
+}
+.dotted-line {
+	border-bottom: 1px dotted black;
+	padding-bottom: 15px;
+	margin-bottom: 10px;
+}

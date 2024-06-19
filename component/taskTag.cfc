@@ -32,7 +32,7 @@
 		</cfif>
 
 		<cfif structKeyExists(session.myStruct, arguments.text1) >
-			<p>Key already exists!</p><br />
+			<p>Key already exists!</p><br/>
 		<cfelse>
 			<cfset session.myStruct[arguments.text1] = arguments.text2 />
 		</cfif>
@@ -72,7 +72,7 @@
 		<cfset local.allowedFileType = "jpeg,png,gif" />
 		<cfset local.maxFileSize = 1048576 />
 
-		<cfif #cgi.CONTENT_LENGTH# LTE local.maxFileSize>
+		<cfif cgi.CONTENT_LENGTH LTE local.maxFileSize>
 			<cffile action="upload" destination="C:\ColdFusion2021\cfusion\wwwroot\Task\uploads" fileField="imgUpload" nameConflict="makeunique">
 
 			<cfif listFindNoCase(local.allowedFileType, cffile.CONTENTSUBTYPE) >
@@ -92,7 +92,6 @@
 				</cfquery>
 					
 				<cflocation url="task14_page2.cfm" addtoken="Yes">
-				<cfset local.result = "Success." />
 			<cfelse>
 					<cfset local.result = "Invalid file type, Only jpeg, png and gif files are allowed." />
 			</cfif>
@@ -119,7 +118,6 @@
 	</cffunction>
 
 	<cffunction name="detailsPage" access="public" returnType="query">
-
 		<cfquery datasource="cfTask" name="details">
     			SELECT * 
 			FROM imgDetails 
@@ -194,9 +192,6 @@
 		<cfargument name="captchaInput" type="string" required="true">
 		<cfargument name="captchaText" type="string" required="true">
 		
-		<cfparam name="arguments.captchaInput"  default="" />
-		<cfparam name="arguments.mail"  default="" />
-		
 		<cfset local.output = "" />
 		<cfif isValid("email", arguments.mail) >
 			<cfif arguments.captchaInput EQ arguments.captchaText >
@@ -218,6 +213,64 @@
 		</cfloop>
 		
 		<cfreturn local.captchaText />
+	</cffunction>
+	
+	
+	<cffunction name="task21" returnType="string" access="public">
+		<cfargument name="babyName" type="string" required="true" />
+		<cfargument name="Email" type="string" required="true" />
+		<cfargument name="birthdayWishes" type="string" required="true" />
+		<cfargument name="greetingImage" type="any" required="true" />
+		
+		<cfset local.sender = "midhun.m@techversantinfotech.com" />
+		<cffile action="upload" destination="C:\ColdFusion2021\cfusion\wwwroot\Task\uploads\task21" fileField="form.greetingImage" nameConflict="overwrite" >
+		<cfset local.fileName = #cffile.SERVERFILE# />
+		<cfset local.filePath = "C:\ColdFusion2021\cfusion\wwwroot\Task\uploads\task21\#local.fileName#" />
+		<cfmail to="#arguments.Email#" from="#local.sender#" username="Midhun" password="Tech@123" port="25" subject="Happy Birthday #arguments.babyName#">
+			<p>Dear #arguments.babyName#,</p>
+			<p>#arguments.birthdayWishes#</p>
+			<p>Best Wishes,</p>
+			<cfmailparam file="#local.filePath#" />
+		</cfmail>
+		
+		<cfreturn "Email sent successfully to #arguments.Email#." />
+	</cffunction>
+	
+	
+	<cffunction name="task23" returnType="string" access="public">
+		<cfargument name="position" type="string" required="true">
+		<cfargument name="relocate" type="string" required="true">
+		<cfargument name="datepicker" type="any" required="true">
+		<cfargument name="portfolio" type="string" required="true">
+		<cfargument name="resume" type="string" required="true">
+		<cfargument name="dollars" type="string" required="true">
+		<cfargument name="cents" type="string" required="true">
+		<cfargument name="fname" type="string" required="true">
+		<cfargument name="lname" type="string" required="true">
+		<cfargument name="emailId" type="string" required="true">
+		<cfargument name="phone" type="string" required="true">
+		
+		<cfset local.uploadDir = expandPath("./uploads/task23") />
+		<cffile action="upload" fileField="form.resume" nameConflict="makeunique" destination="#local.uploadDir#" />
+		<cfset local.resumeName = cffile.SERVERFILE />
+		<cfquery datasource="cfTask" name="local.task23">
+			INSERT INTO task23 (positions, relocate, datepick, portfolio, resumePath, dollars, cents, fname, lname, emailId, phone)
+			VALUES (
+				<cfqueryparam value="#arguments.position#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.relocate#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.datepicker#" cfsqltype="cf_sql_date">,
+				<cfqueryparam value="#arguments.Portfolio#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#local.resumeName#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.dollars#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.cents#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.emailId#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">
+			)
+		</cfquery>
+		
+		<cfreturn "Saved successfully" />
 	</cffunction>
 
 </cfcomponent>
