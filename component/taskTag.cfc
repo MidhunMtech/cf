@@ -272,6 +272,55 @@
 		
 		<cfreturn "Saved successfully" />
 	</cffunction>
+	
+	
+	<cffunction name="task24" returnType="string" access="public">
+		<cfargument name="firstName" type="string" required="true" />
+		<cfargument name="email" type="string" required="true" />
+		
+		<cfset local.result = "" />
+		<cfquery name="local.task24" datasource="cfTask">
+			SELECT 
+				email
+			FROM
+				task24
+		</cfquery>
+		
+		<cfif NOT structKeyExists(local.task24, "#arguments.email#") >
+			<cfquery name="local.insertSubscriber" datasource="cfTask">
+			INSERT INTO task24 
+				(firstName, email)
+			VALUES (
+				<cfqueryparam value="#arguments.firstName#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+				)
+			</cfquery>
+
+			<cfset local.fName = ucase(#arguments.firstName#) />
+			<cfset local.result = "<p>Subscription successful! Thank you, <b>#local.fName#</b>.</p>" />
+		<cfelse>
+			<cfset local.result = "<p>email is already Exists</p>" />
+		</cfif>
+		
+		
+		<cfreturn local.result />
+
+	</cffunction>
+	
+	
+	<cffunction name="task27" returnType="any" access="public">
+		<cfargument name="username" type="string" required="true">
+		<cfargument name="password" type="string" required="true">
+		
+		<cfif arguments.username EQ "admin" AND arguments.password EQ "password">
+			<cfset session.loggedIn = true />
+			<cflocation url="task27_welcome.cfm" addtoken="false" />
+		<cfelse>
+			<cfset local.errorMessage = "<p style='color: red;'>Invalid username or password. Please try again.</p>" />
+		</cfif>
+		
+		<cfreturn local.errorMessage />
+	</cffunction>
 
 </cfcomponent>
 
