@@ -32,3 +32,94 @@ CREATE table imgDetails (
 SELECT * FROM imgDetails;
 
 TRUNCATE TABLE imgDetails;
+
+CREATE TABLE positions(
+	ID int PRIMARY KEY auto_increment,
+    positions VARCHAR(50)
+);
+
+INSERT INTO positions (positions)
+VALUES 
+	("Interface Designer"),
+	("Software Engineer"),
+    ("System Admininstrator"),
+    ("Manager");
+    
+SELECT * FROM positions;
+
+CREATE TABLE task23 (
+	positions VARCHAR(50),
+    relocate VARCHAR(5),
+    datepick DATE,
+    portfolio VARCHAR(50),
+    resumePath  VARCHAR(50),
+    dollars VARCHAR(50),
+    cents VARCHAR(50),
+    fname VARCHAR(50),
+    lname VARCHAR(50),
+    emailId VARCHAR(50),
+    phone VARCHAR(50)
+);
+
+SELECT * FROM task23;
+
+CREATE TABLE task24 (
+	firstName VARCHAR(50),
+    email VARCHAR(50)
+);
+
+SELECT * FROM task24;
+TRUNCATE TABLE task24;
+
+CREATE TABLE task25_tag (
+	words VARCHAR(50) UNIQUE
+);
+
+SELECT * FROM task25_tag;
+TRUNCATE TABLE task25_tag;
+
+ALTER TABLE task25_tag DROP INDEX words;
+
+ALTER TABLE task25_tag
+ADD CONSTRAINT unique_words UNIQUE (words);
+
+CREATE TABLE task25_task2 (
+	words VARCHAR(50)
+);
+SELECT * FROM task25_task2;
+TRUNCATE TABLE task25_task2;
+
+
+-- task28
+CREATE TABLE user (
+	userId INT AUTO_INCREMENT PRIMARY KEY,
+    userName VARCHAR(50) NOT NULL,
+    pwd VARCHAR(50) NOT NULL,
+    `role` VARCHAR(20) NOT NULL
+);
+
+INSERT INTO user 
+	(userName, pwd, role)
+VALUES 
+	("admin123", "password", "admin"),
+    ("editor123", "password", "editor") ;
+
+CREATE TABLE `page` (
+	pageId INT AUTO_INCREMENT PRIMARY KEY,
+    pageName VARCHAR(50) NOT NULL,
+    pageDesc TEXT NOT NULL
+);
+INSERT INTO page 
+	(pageName, pageDesc)
+VALUES 
+	("page1", "password");
+    
+    
+SELECT * FROM user;
+SELECT * FROM page;
+
+CREATE TABLE task26 (
+	words VARCHAR(50)
+);
+TRUNCATE TABLE task26;
+

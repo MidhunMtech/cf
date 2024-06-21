@@ -313,13 +313,98 @@
 		<cfargument name="password" type="string" required="true">
 		
 		<cfif arguments.username EQ "admin" AND arguments.password EQ "password">
-			<cfset session.loggedIn = true />
+			<cfset session.logIn = true />
 			<cflocation url="task27_welcome.cfm" addtoken="false" />
 		<cfelse>
 			<cfset local.errorMessage = "<p style='color: red;'>Invalid username or password. Please try again.</p>" />
 		</cfif>
 		
 		<cfreturn local.errorMessage />
+	</cffunction>
+	
+	
+	<cffunction name="task28Login" returnType="void" access="public">
+		<cfargument name="username" type="string" required="true" />
+		<cfargument name="pwd" type="string" required="true" />
+		
+		<cfquery name="local.getUser" datasource="cfTask">
+			SELECT * 
+			FROM 
+				user
+			WHERE
+				username = <cfqueryparam value="#arguments.username#" cfsqltype="cf_sql_varchar">
+				AND pwd = <cfqueryparam value="#arguments.pwd#" cfsqltype="cf_sql_varchar">
+		</cfquery>
+		
+		<cfif local.getUser.recordCount EQ 1 >
+			<cfset session.userid = local.getUser.userId />
+			<cfset session.username = local.getUser.userName />
+			<cfset session.role = local.getUser.role />
+			<cfdump var="#session#" />
+			<cflocation url="task28_dash.cfm" addtoken="false" />
+		<cfelseif arguments.username EQ "user123" AND arguments.pwd EQ "password">
+			<cfset session.userid = "3" />
+			<cflocation url="task28_index.cfm" />
+		<cfelse>
+			<cflocation url="task28_login.cfm?error=1" addtoken="false">
+			
+		</cfif>
+	</cffunction>
+	
+	
+	<cffunction name="task28Dash" returnType="void" access="public">
+
+		<cfif not structKeyExists(session, "userid")>
+			<cflocation url="task28_login.cfm">
+		</cfif>
+
+		<cfif structKeyExists(url, "logout") AND url.logout EQ "true">
+			<cfset StructClear(session) />
+			<cflocation url="task28_login.cfm" addtoken="false" />
+		</cfif>
+		
+	</cffunction>
+	
+	<cffunction name="task28AddPage" returnType="string" access="public">
+		<cfargument name="pageName" type="string" required="true" />
+		<cfargument name="pageDesc" type="string" required="true" />
+		
+		<cfif not structKeyExists(session, "userid")>
+			<cflocation url="task28_login.cfm">
+		</cfif>
+		
+		<cfquery name="insertPage" datasource="cfTask">
+			INSERT INTO page
+				(pageName, pageDesc)
+			VALUES (
+				<cfqueryparam value="#arguments.pageName#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.pageDesc#" cfsqltype="cf_sql_varchar">
+			)
+		</cfquery>
+		<cflocation url="task28_dash.cfm" addtoken="false" />
+		
+		<cfreturn "done" />
+	</cffunction>
+	
+	
+	<cffunction name="task28Edit" returnType="string" access="public">
+		<cfargument name="pageName" type="string" required="true" />
+		<cfargument name="pageDesc" type="string" required="true" />
+		<cfargument name="pageid" type="string" required="true" />
+		
+		<cfif not structKeyExists(session, "userid")>
+			<cflocation url="task28_login.cfm">
+		</cfif>
+		
+		<cfquery datasource="cfTask">
+			UPDATE page 
+			SET pageName = <cfqueryparam value="#arguments.pageName#" cfsqltype="cf_sql_varchar">, 
+				pageDesc = <cfqueryparam value="#arguments.pageDesc#" cfsqltype="cf_sql_varchar">
+			WHERE
+				pageId = <cfqueryparam value="#arguments.pageid#" cfsqltype="cf_sql_integer">
+		</cfquery>
+		<cflocation url="task28_dash.cfm">
+
 	</cffunction>
 
 </cfcomponent>

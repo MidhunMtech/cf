@@ -134,4 +134,63 @@
 		<cfreturn local.result />
 	
 	</cffunction>
+	
+	
+	<cffunction name="task26" returnType="any" access="public">
+		<cfargument name="file" type="any" required="true" />
+		<cfset local.result = "" />
+		<!-- Read the uploaded file -->
+		<cffile action="read" file="#arguments.file#" variable="fileContent">
+
+		<!-- Process the text to extract individual words -->
+		<cfset fileContent = rereplace(fileContent, "[^a-zA-Z0-9\s]", "", "all")>      <!---reg exp--->
+		<cfset local.wordArray = listToArray(fileContent, " ")>
+		
+		<cfloop array="#local.wordArray#" index="i">
+			<cfquery name="local.insert" datasource="cfTask">
+				INSERT INTO task26
+					(words)
+				VALUES(
+					<cfqueryparam value="#i#" cfsqltype="cf_sql_varchar">
+				)
+			</cfquery>
+		</cfloop>
+		<cfquery name="local.table" datasource="cfTask">
+			SELECT 
+				words
+			FROM
+				task26
+		</cfquery>
+		
+		<cfset local.wordsArray = [] />
+		<cfset local.uniqueWord = [] />
+		<cfset local.myStruct = {} />
+		
+		<cfloop query="local.table">
+			<cfset ArrayAppend(local.wordsArray, local.table.words) />
+		</cfloop>
+		
+		<cfloop array="#local.wordsArray#" index="wordOne">
+			<cfset count = 0 />
+			<cfloop array="#local.wordsArray#" index="wordTwo">
+				<cfif #wordOne# EQ #wordTwo# >
+					<cfset count += 1 />
+				</cfif>
+			</cfloop>
+			<cfif NOT ArrayContains(local.uniqueWord, #wordOne#) AND Len(#wordOne#) GTE 3>
+				<cfset ArrayAppend(local.uniqueWord, #wordOne#) />
+				<cfset fontSize = 16 + #count# />
+				<cfif #count# MOD 2 EQ 0 >
+					<cfset color = "green" />
+				<cfelse>
+					<cfset color = "red" />
+				</cfif>
+				<cfset local.result &= "<p style='font-size:#fontSize#px; color: #color#;'>- #wordOne# (#count#)<br></p>" />
+				<cfset local.myStruct["#wordOne#"] = #count# />
+			</cfif>
+		</cfloop>
+		
+		<cfreturn local.result />
+	
+	</cffunction>
 </cfcomponent>
