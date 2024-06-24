@@ -4,13 +4,13 @@
 		<cfargument name="num" type="numeric" required="true">
 
 
-		<cfquery datasource="cfTask" name="person">
+		<cfquery datasource="cfTask" name="local.person">
 			SELECT * 
 			FROM person
 		</cfquery>
-		<cfdump var="#person#">
+		<cfdump var="#local.person#">
 
-		<cfquery name="nthRow" datasource="cfTask">
+		<cfquery name="local.nthRow" datasource="cfTask">
     			SELECT 
 				firstname,
 				lastname
@@ -25,7 +25,7 @@
 				RowNum = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.num#">
 		</cfquery>
 
-		<cfreturn nthRow>
+		<cfreturn local.nthRow>
 
 	</cffunction>
 
@@ -74,15 +74,15 @@
 	<cfscript>
 		public query function task12Script(number) {
 
-			person = queryExecute (
+			local.person = queryExecute (
 				"SELECT * FROM person",
 				[],
 				{datasource = "cfTask"}
 			);
 
-			writeDump(person);
+			writeDump(local.person);
 
-			nthRow = queryExecute (
+			local.nthRow = queryExecute (
 				"SELECT firstname, lastname
 				FROM ( 
 					SELECT firstname, lastname, row_number() over() as RowNum
@@ -93,7 +93,7 @@
 				{datasource='cfTask'}		
 			);
 
-			return nthRow;
+			return local.nthRow;
 		}
 
 		

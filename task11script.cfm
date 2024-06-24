@@ -6,7 +6,7 @@
 		numeric no3=1,
 		numeric no4=1) {
 		
-		return no1 * no2 * no3 * no4;
+		return arguments.no1 * arguments.no2 * arguments.no3 * arguments.no4;
 	};
 
 	res = multiply(1, 2);

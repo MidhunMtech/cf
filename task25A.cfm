@@ -18,7 +18,8 @@
 		<cfset result = task25CFC.task25(form.text) />
 		
 		<cfdump var="#result#" />
-	</cfif>
-	
-<cfcatch><cfdump var="#cfcatch#"></cfdump></cfcatch>
+	</cfif>	
+<cfcatch>
+	<cfdump var="#cfcatch#"></cfdump>
+</cfcatch>
 </cftry>

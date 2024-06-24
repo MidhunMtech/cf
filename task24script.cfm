@@ -22,14 +22,15 @@
 	</body>
 </html>
 
-<cftry>
-	<cfif structKeyExists(form, "submit")>
-		<cfset task24CFC = createObject("component", "component.taskTag") />
-		<cfset result = task24CFC.task24(form.firstName, form.email) />
-		<cfoutput>#result#</cfoutput>
-	</cfif>
-<cfcatch>
-	<cfdump var="#cfcatch#" />
-</cfcatch>
-</cftry>
-
+<cfscript>
+	try {
+		if (structKeyExists(form, "submit")) {
+			task24CFC = createObject("component", "component.script");
+			result = task24CFC.task24Script(form.firstName, form.email);
+			
+			writeOutput(result);
+		}
+	} catch(any e) {
+		writedump(var=e);
+	}
+</cfscript>

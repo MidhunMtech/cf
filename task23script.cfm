@@ -68,15 +68,27 @@
 	</body>
 </html>
 
-<cftry>
-	<cfif structKeyExists(form, "submit")>
-		<cfset task23CFC = createObject("component", "component.taskTag") />
-		<cfset result = task23CFC.task23(form.position, form.relocate, form.datepicker, form.Portfolio, form.resume, form.dollars, form.cents, form.fname, form.lname, form.emailId, form.phone) />
-		
-		<cfdump var="#result#" />
-	</cfif>
-<cfcatch>
-	<cfdump var="#cfcatch#" />
-</cfcatch>
-</cftry>
-
+<cfscript>
+	try {
+		if (structKeyExists(form, "submit")) {
+			task23CFC = createObject("component", "component.script");
+			result = task23CFC.task23Script(
+				form.position,
+				form.relocate,
+				form.datepicker,
+				form.Portfolio,
+				form.resume,
+				form.dollars,
+				form.cents,
+				form.fname,
+				form.lname,
+				form.emailId,
+				form.phone
+				);
+				
+			writeDump(#result#);
+		}
+	} catch (any e) {
+		writeDump(var=e);
+	}
+</cfscript>

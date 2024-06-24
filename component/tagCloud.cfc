@@ -82,7 +82,7 @@
 	</cffunction>
 	
 	
-		<cffunction name="task25C" returnType="string" access="public">
+	<cffunction name="task25C" returnType="string" access="public">
 		<cfargument name="text" type="string" required="true" />
 		
 		<cfset local.result = "" />
@@ -193,4 +193,219 @@
 		<cfreturn local.result />
 	
 	</cffunction>
+	
+	
+	<cfscript>
+	
+		public struct function task25Ascript(
+			required string text) {
+			
+			local.result = structNew();
+			local.wordArray = [];
+			local.wordArray = ListToArray(arguments.text, " ");
+			local.result.words = wordArray;
+			
+			local.wordsTable = queryExecute(
+				"SELECT	
+					words
+				FROM 
+					task25_tag",
+				[],
+				{datasource = "cfTask"}
+			);
+			
+			for (i in local.wordArray) {
+				checkWord = queryExecute(
+					"SELECT 1 
+					FROM 
+						task25_tag
+					WHERE
+						words = ?",
+					[{value: #i#, cfsqltype: "cf_sql_varchar"}],
+					{datasource = "cfTask"}
+				);
+				
+				if(checkWord.recordCount EQ 0) {
+					local.insert = queryExecute(
+						"INSERT INTO 
+							task25_tag
+						VALUES 
+							(?)",
+						[{value: #i#, cfsqltype: "cf_sql_varchar"}],
+						{datasource = "cfTask"}
+					);
+				}
+			}
+			return local.result;
+		}
+		
+		
+		public string function task25BScript (
+			required string text ) {
+				
+			local.result = "";
+			local.word = rereplace(arguments.text, "[^a-zA-Z0-9\s]", "", "all");
+			local.wordArray = ListToArray(local.word, " ");
+			
+			for (i in local.wordArray) {
+				local.insert = queryExecute(
+					"INSERT INTO task25_task2
+						(words)
+					VALUES (?)",
+					[{value: #i#, cfsqltype: "cf_sql_varchar"}],
+					{datasource = "cfTask"}
+				);
+			}
+			
+			local.table = queryExecute(
+				"SELECT
+					words
+				FROM
+					task25_task2",
+				[],
+				{datasource = "cfTask"}
+			);
+			local.wordsArray = [];
+			local.uniqueWord = [];
+			local.myStruct = {};
+			
+			for (i = 1; i <= local.table.recordCount; i++) {
+				ArrayAppend(local.wordsArray, local.table.words[i])
+			}
+			
+			for (wordOne in local.wordsArray) {
+				count = 0;
+				for (wordTwo in local.wordsArray) {
+					if (wordOne EQ wordTwo){
+						count += 1;
+					}
+				}
+				if(NOT ArrayContains(local.uniqueWord, wordOne) AND Len(wordOne) GTE 3){
+					ArrayAppend(local.uniqueWord, wordOne);
+					local.result &= "<p>- #wordOne# (#count#)<br></p>";
+					local.myStruct["#wordOne#"] = #count#;
+				}
+			}
+			
+			return local.result;
+		}
+		
+		public string function task25CScript(
+			required string text ) {
+				
+			local.result = "";
+			local.word = rereplace(arguments.text, "[^a-zA-Z0-9\s]", "", "all");
+			local.wordArray = ListToArray(local.word, " ");
+			
+			for (i in local.wordArray) {
+				local.insert = queryExecute(
+					"INSERT INTO task25_task2
+						(words)
+					VALUES (?)",
+					[{value: #i#, cfsqltype: "cf_sql_varchar"}],
+					{datasource = "cfTask"}
+				);
+			}
+			
+			local.table = queryExecute(
+				"SELECT
+					words
+				FROM
+					task25_task2",
+				[],
+				{datasource = "cfTask"}
+			);
+			local.wordsArray = [];
+			local.uniqueWord = [];
+			local.myStruct = {};
+			
+			for (i = 1; i <= local.table.recordCount; i++) {
+				ArrayAppend(local.wordsArray, local.table.words[i])
+			}
+			
+			for (wordOne in local.wordsArray) {
+				count = 0;
+				for (wordTwo in local.wordsArray) {
+					if (wordOne EQ wordTwo){
+						count += 1;
+					}
+				}
+				if(NOT ArrayContains(local.uniqueWord, wordOne) AND Len(wordOne) GTE 3){
+					ArrayAppend(local.uniqueWord, wordOne);
+					fontSize = 16 + count;
+					if (count MOD 2 EQ 0) {
+						color = "green";
+					} else {
+						color = "red";
+					}
+					local.result &= "<p style='font-size:#fontSize#px; color: #color#;'>- #wordOne# (#count#)<br></p>";
+					local.myStruct["#wordOne#"] = #count#;
+				}
+			}
+			
+			return local.result;
+		}
+		
+		
+		public string function task26Script (
+			required any file) {
+			
+			local.result = "";
+			cffile (
+				action="read",
+				file="#arguments.file#",
+				variable="fileContent"
+				);
+			fileContent = rereplace(fileContent, "[^a-zA-Z0-9\s]", "", "all");
+			local.wordArray = listToArray(fileContent, " ");
+			
+			for (i in local.wordArray) {
+				local.insert = queryExecute(
+					"INSERT INTO task26
+						(words)
+					VALUES(?)",
+					[{value: #i#, cfsqltype: "cf_sql_varchar"}],
+					{datasource = "cfTask"}
+				);
+			}
+			
+			local.table = queryExecute (
+				"SELECT 
+					words
+				FROM
+					task26",
+				[],
+				{datasource = "cfTask"}
+			);
+			local.wordsArray = [];
+			local.uniqueWord = [];
+			local.myStruct = {};
+			
+			for (i = 1; i <= local.table.recordCount; i++) {
+				ArrayAppend(local.wordsArray, local.table.words[i])
+			}
+			
+			for (wordOne in local.wordsArray) {
+				count = 0;
+				for (wordTwo in local.wordsArray) {
+					if (wordOne EQ wordTwo){
+						count += 1;
+					}
+				}
+				if(NOT ArrayContains(local.uniqueWord, wordOne) AND Len(wordOne) GTE 3){
+					ArrayAppend(local.uniqueWord, wordOne);
+					fontSize = 16 + count;
+					if (count MOD 2 EQ 0) {
+						color = "green";
+					} else {
+						color = "red";
+					}
+					local.result &= "<p style='font-size:#fontSize#px; color: #color#;'>- #wordOne# (#count#)<br></p>";
+					local.myStruct["#wordOne#"] = #count#;
+				}
+			}
+			
+			return local.result;
+		}
+	</cfscript>
 </cfcomponent>

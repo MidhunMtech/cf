@@ -14,8 +14,11 @@
     
     			<input type="submit" name="submit" value="Submit"><br><br>
 		</form>
+	</body>
+</html>
 
-		<cfif structKeyExists(form, "submit") >
-			<cfset task6CFC = createObject("component", "component.taskTag") />
-			<cfset result = task6CFC.task6Tag(form.textbox1, form.textbox2) />
-		</cfif>
+<cfif structKeyExists(form, "submit") >
+	<cfset task6CFC = createObject("component", "component.taskTag") />
+	<cfset result = task6CFC.task6Tag(form.textbox1, form.textbox2) />
+	<cfdump var="#result#" />
+</cfif>

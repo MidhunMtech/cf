@@ -11,14 +11,16 @@
 		</form>
 	</body>
 </html>
-<cftry>
-	<cfif structKeyExists(form, "submit") >
-		<cfset task25CFC = createObject("component", "component.tagCloud") />
-		<cfset result = task25CFC.task25B(form.text) />
-		
-		<cfoutput>#result#</cfoutput>
-	</cfif>
-<cfcatch>
-	<cfdump var="#cfcatch#" />
-</cfcatch>
-</cftry>
+
+<cfscript>
+	try {
+		if(structKeyExists(form, "submit")) {
+			task25CCFC = createObject("component", "component.tagCloud");
+			result = task25CCFC.task25CScript(form.text);
+			
+			writeOutput(#result#);
+		}
+	} catch (any e) {
+		writeDump(var=e)
+	}
+</cfscript>

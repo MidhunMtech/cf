@@ -4,34 +4,34 @@
 		<cfargument name="userDOB" type="string" required="true">
 		<cfargument name="motherDOB" type="string" required="true">
 
-		<cfset result = {} />
+		<cfset local.result = {} />
 
-		<cfset userDOB = parseDateTime(arguments.userDOB, "dd-mm-yyyy") />
-		<cfset motherDOB = parseDateTime(arguments.motherDOB, "dd-mm-yyyy") />
+		<cfset local.userDOB = parseDateTime(arguments.userDOB, "dd-mm-yyyy") />
+		<cfset local.motherDOB = parseDateTime(arguments.motherDOB, "dd-mm-yyyy") />
 		<cfset today = now() />
 
-		<cfset result.userAge = dateDiff("yyyy", userDOB, today) />
-		<cfset result.userAgeMonth = dateDiff("m", userDOB, today) % 12 />
-		<cfset result.motherAge = dateDiff("yyyy", motherDOB, today) />
-		<cfset result.motherAgeMonth = dateDiff("m", motherDOB, today) % 12 />
-		<cfset result.motherDeliveryAge = result.motherAge - result.userAge />
+		<cfset local.result.userAge = dateDiff("yyyy", local.userDOB, today) />
+		<cfset local.result.userAgeMonth = dateDiff("m", local.userDOB, today) % 12 />
+		<cfset local.result.motherAge = dateDiff("yyyy", local.motherDOB, today) />
+		<cfset local.result.motherAgeMonth = dateDiff("m", local.motherDOB, today) % 12 />
+		<cfset local.result.motherDeliveryAge = local.result.motherAge - local.result.userAge />
 
-        	<cfset result.userDayLeft = daysLeft(userDOB) />
-        	<cfset result.motherDayLeft = daysLeft(motherDOB) />
+        	<cfset local.result.userDayLeft = daysLeft(local.userDOB) />
+        	<cfset local.result.motherDayLeft = daysLeft(local.motherDOB) />
 
-		<cfreturn result />
+		<cfreturn local.result />
 	</cffunction>
 	
     	<cffunction name="daysLeft" returntype="numeric" access="private">
         	<cfargument name="dob" type="date" required="true">
         
-        	<cfset nextBirthYear = year(now())>
+        	<cfset local.nextBirthYear = year(now())>
         	<cfif month(now()) GT month(arguments.dob) OR (month(now()) EQ month(arguments.dob) AND day(now()) GT day(arguments.dob))>
-            		<cfset nextBirthYear = year(now()) + 1>
+            		<cfset local.nextBirthYear = year(now()) + 1>
         	</cfif>
-        	<cfset nextBirthDay = createDate(nextBirthYear, month(arguments.dob), day(arguments.dob))>
+        	<cfset local.nextBirthDay = createDate(local.nextBirthYear, month(arguments.dob), day(arguments.dob))>
         
-        	<cfreturn dateDiff("d", now(), nextBirthDay)>
+        	<cfreturn dateDiff("d", now(), local.nextBirthDay)>
     	</cffunction>
 
 
@@ -69,15 +69,15 @@
 
 
 
-		public string function keyValue(
+		public struct function keyValue(
 			required string text1,
 			required string text2) {
 			
-			myStruct = {};
+			local.myStruct = {};
 			
-			StructInsert(myStruct, text1, text2)
+			StructInsert(local.myStruct, text1, text2)
 			
-			writeDump(var = myStruct);
+			return local.myStruct;
 		};
 
 	

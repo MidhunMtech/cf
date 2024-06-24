@@ -19,6 +19,7 @@
 			if (structKeyExists(form, "submit")) {
 				task6CFC = createObject("component", "component.task5");
 				result = task6CFC.keyValue(form.textbox1, form.textbox2);
+				writeDump(var=result)
 			}
 		</cfscript>
 

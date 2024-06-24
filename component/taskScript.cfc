@@ -73,7 +73,8 @@
 		);
 
 		return img;
-	};
+	}
+	
 
 
 	</cfscript>

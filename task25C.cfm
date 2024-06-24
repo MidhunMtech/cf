@@ -18,5 +18,7 @@
 		
 		<cfoutput>#result#</cfoutput>
 	</cfif>
-<cfcatch><cfdump var="#cfcatch#" /></cfcatch>
+<cfcatch>
+	<cfdump var="#cfcatch#" />
+</cfcatch>
 </cftry>

@@ -1,12 +1,12 @@
 <cfcomponent>
-	<cffunction name="task6Tag" returnType="string" access="public">
+	<cffunction name="task6Tag" returnType="struct" access="public">
 		<cfargument name="text1" type="string" required="true" />
 		<cfargument name="text2" type="string" required="true" />
 
-		<cfset myStruct = structNew() />
-		<cfset StructInsert(myStruct, arguments.text1, arguments.text2) />
+		<cfset local.myStruct = structNew() />
+		<cfset StructInsert(local.myStruct, arguments.text1, arguments.text2) />
 
-		<cfdump var="#myStruct#" />
+		<cfreturn local.myStruct />
 	</cffunction>
 
 	
@@ -40,7 +40,7 @@
 		<cfreturn session.myStruct />
 	</cffunction>
 
-	<cffunction name="oldImgValid" returnType="string" access="public" >
+	<!---<cffunction name="oldImgValid" returnType="string" access="public" >
 		<cfargument name="imgName" type="string" required="true" />
 		<cfargument name="imgDesc" type="string" required="true" />
 		<cfargument name="imgFile" type="any" required="true" />
@@ -62,7 +62,7 @@
 		</cfif>
 		 
 		<cfreturn local.result >
-	</cffunction>
+	</cffunction>--->
 
 	<cffunction name="imgValidation" access="public" returnType="string" >
 		<cfargument name="imgName" type="string" required="true" />
@@ -82,7 +82,7 @@
 					<p>Image name: #arugments.imgName#</p>
 					<p>description: #arguments.imgDesc#</p>
 				</cfoutput>--->
-				<cfquery datasource="cfTask" name="form">
+				<cfquery datasource="cfTask" name="local.form">
            				INSERT INTO imgDetails (imgName, imgDesc, imgPath)
            				VALUES (
                					<cfqueryparam value="#arguments.imgName#" cfsqltype="cf_sql_varchar">,
@@ -104,7 +104,7 @@
 	</cffunction>
 
 	<cffunction name="listPage" access="public" returnType="query">
-		<cfquery datasource="cfTask" name="img">
+		<cfquery datasource="cfTask" name="local.img">
 			SELECT
 				ID,
 				imgName,
@@ -114,17 +114,17 @@
 				imgDetails
 		</cfquery>
 	
-		<cfreturn img>
+		<cfreturn local.img>
 	</cffunction>
 
 	<cffunction name="detailsPage" access="public" returnType="query">
-		<cfquery datasource="cfTask" name="details">
+		<cfquery datasource="cfTask" name="local.details">
     			SELECT * 
 			FROM imgDetails 
 			WHERE id = <cfqueryparam value="#url.id#" cfsqltype="CF_SQL_INTEGER">
 		</cfquery>
 
-		<cfreturn details>
+		<cfreturn local.details>
 	</cffunction>
 
 	<cffunction name="multiply" returnType="numeric" access="public">
@@ -308,7 +308,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="task27" returnType="any" access="public">
+	<cffunction name="task27" returnType="string" access="public">
 		<cfargument name="username" type="string" required="true">
 		<cfargument name="password" type="string" required="true">
 		
@@ -340,7 +340,7 @@
 			<cfset session.userid = local.getUser.userId />
 			<cfset session.username = local.getUser.userName />
 			<cfset session.role = local.getUser.role />
-			<cfdump var="#session#" />
+			<!---<cfdump var="#session#" />--->
 			<cflocation url="task28_dash.cfm" addtoken="false" />
 		<cfelseif arguments.username EQ "user123" AND arguments.pwd EQ "password">
 			<cfset session.userid = "3" />
@@ -365,7 +365,7 @@
 		
 	</cffunction>
 	
-	<cffunction name="task28AddPage" returnType="string" access="public">
+	<cffunction name="task28AddPage" returnType="void" access="public">
 		<cfargument name="pageName" type="string" required="true" />
 		<cfargument name="pageDesc" type="string" required="true" />
 		
@@ -373,7 +373,7 @@
 			<cflocation url="task28_login.cfm">
 		</cfif>
 		
-		<cfquery name="insertPage" datasource="cfTask">
+		<cfquery name="local.insertPage" datasource="cfTask">
 			INSERT INTO page
 				(pageName, pageDesc)
 			VALUES (
@@ -383,11 +383,10 @@
 		</cfquery>
 		<cflocation url="task28_dash.cfm" addtoken="false" />
 		
-		<cfreturn "done" />
 	</cffunction>
 	
 	
-	<cffunction name="task28Edit" returnType="string" access="public">
+	<cffunction name="task28Edit" returnType="void" access="public">
 		<cfargument name="pageName" type="string" required="true" />
 		<cfargument name="pageDesc" type="string" required="true" />
 		<cfargument name="pageid" type="string" required="true" />
