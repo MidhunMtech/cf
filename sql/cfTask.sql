@@ -48,7 +48,8 @@ VALUES
 SELECT * FROM positions;
 
 CREATE TABLE task23 (
-	positions VARCHAR(50),
+	ID INT AUTO_INCREMENT PRIMARY KEY,
+	positions INT,
     relocate VARCHAR(5),
     datepick DATE,
     portfolio VARCHAR(50),
@@ -60,6 +61,15 @@ CREATE TABLE task23 (
     emailId VARCHAR(50),
     phone VARCHAR(50)
 );
+    
+ALTER TABLE 
+	task23
+ADD CONSTRAINT 
+	fk_positions
+FOREIGN KEY 
+	(positions) 
+REFERENCES 
+	positions(ID);
 
 SELECT * FROM task23;
 
