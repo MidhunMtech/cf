@@ -235,44 +235,70 @@
 		
 		<cfreturn "Email sent successfully to #arguments.Email#." />
 	</cffunction>
-	
-	
-	<cffunction name="task23" returnType="string" access="public">
-		<cfargument name="position" type="string" required="true">
-		<cfargument name="relocate" type="string" required="true">
-		<cfargument name="datepicker" type="any" required="true">
-		<cfargument name="portfolio" type="string" required="true">
-		<cfargument name="resume" type="string" required="true">
-		<cfargument name="dollars" type="string" required="true">
-		<cfargument name="cents" type="string" required="true">
-		<cfargument name="fname" type="string" required="true">
-		<cfargument name="lname" type="string" required="true">
-		<cfargument name="emailId" type="string" required="true">
-		<cfargument name="phone" type="string" required="true">
+		
+		
+	<cffunction name="task23" returnType="any" access="public">
+		<cfargument name="form" type="any" required="true" />
 		
 		<cfset local.uploadDir = expandPath("./uploads/task23") />
 		<cffile action="upload" fileField="form.resume" nameConflict="makeunique" destination="#local.uploadDir#" />
 		<cfset local.resumeName = cffile.SERVERFILE />
 		<cfquery datasource="cfTask" name="local.task23">
-			INSERT INTO task23 (positions, relocate, datepick, portfolio, resumePath, dollars, cents, fname, lname, emailId, phone)
+			INSERT INTO 
+				task23 (
+					positions,
+					relocate,
+					datepick,
+					portfolio,
+					resumePath,
+					dollars,
+					cents,
+					fname,
+					lname,
+					emailId,
+					phone )
 			VALUES (
-				<cfqueryparam value="#arguments.position#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.relocate#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.datepicker#" cfsqltype="cf_sql_date">,
-				<cfqueryparam value="#arguments.Portfolio#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.position#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.relocate#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.datepicker#" cfsqltype="cf_sql_date">,
+				<cfqueryparam value="#arguments.form.Portfolio#" cfsqltype="cf_sql_varchar">,
 				<cfqueryparam value="#local.resumeName#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.dollars#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.cents#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.fname#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.lname#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.emailId#" cfsqltype="cf_sql_varchar">,
-				<cfqueryparam value="#arguments.phone#" cfsqltype="cf_sql_varchar">
+				<cfqueryparam value="#arguments.form.dollars#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.cents#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.fname#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.lname#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.emailId#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.form.phone#" cfsqltype="cf_sql_varchar">
 			)
 		</cfquery>
-		
-		<cfreturn "Saved successfully" />
-	</cffunction>
 	
+		<cfreturn "Saved successfully" /> 
+	</cffunction>	
+	
+																	<!---<cfargument name="position" type="string" required="true">
+																		<cfargument name="relocate" type="string" required="true">
+																		<cfargument name="datepicker" type="any" required="true">
+																		<cfargument name="portfolio" type="string" required="true">
+																		<cfargument name="resume" type="string" required="true">
+																		<cfargument name="dollars" type="string" required="true">
+																		<cfargument name="cents" type="string" required="true">
+																		<cfargument name="fname" type="string" required="true">
+																		<cfargument name="lname" type="string" required="true">
+																		<cfargument name="emailId" type="string" required="true">
+																		<cfargument name="phone" type="string" required="true">--->
+		
+		
+	<cffunction name="table" returnType="query" access="public">
+		<cfquery datasource="cfTask" name="local.positions">
+			SELECT 
+				ID,
+				positions
+			FROM
+				positions
+		</cfquery>
+		
+		<cfreturn local.positions />
+	</cffunction>
 	
 	<cffunction name="task24" returnType="string" access="public">
 		<cfargument name="firstName" type="string" required="true" />
@@ -286,7 +312,7 @@
 				task24
 		</cfquery>
 		
-		<cfif NOT structKeyExists(local.task24, "#arguments.email#") >
+		<cfif NOT structKeyExists(local.task24, "arguments.email") >
 			<cfquery name="local.insertSubscriber" datasource="cfTask">
 			INSERT INTO task24 
 				(firstName, email)
@@ -296,15 +322,34 @@
 				)
 			</cfquery>
 
-			<cfset local.fName = ucase(#arguments.firstName#) />
+			<cfset local.fName = ucase(arguments.firstName) />
 			<cfset local.result = "<p>Subscription successful! Thank you, <b>#local.fName#</b>.</p>" />
 		<cfelse>
 			<cfset local.result = "<p>email is already Exists</p>" />
 		</cfif>
 		
-		
 		<cfreturn local.result />
+	</cffunction>
+	
+	<cffunction name="checkMail" returnType="string" access="public">
+		<cfargument name="email" type="string" required="true" >
+		
+		<cfquery name="local.checkEmail" datasource="cfTask">
+			SELECT 
+				email
+			FROM 
+				task24
+			WHERE 
+				email = <cfqueryparam value="#arguments.email#" cfsqltype="cf_sql_varchar">
+		</cfquery>
 
+		<cfif local.checkEmail.recordcount GT 0>
+			<cfset local.res = "exists" />
+		<cfelse>
+			<cfset local.res = "not_exists" />
+		</cfif>
+		
+		<cfreturn local.res />
 	</cffunction>
 	
 	
@@ -319,14 +364,14 @@
 			<cfset local.errorMessage = "<p style='color: red;'>Invalid username or password. Please try again.</p>" />
 		</cfif>
 		
-		<cfreturn local.errorMessage />
+		<cfreturn local.errorMessage /> 
 	</cffunction>
 	
 	
 	<cffunction name="task28Login" returnType="void" access="public">
 		<cfargument name="username" type="string" required="true" />
 		<cfargument name="pwd" type="string" required="true" />
-		
+
 		<cfquery name="local.getUser" datasource="cfTask">
 			SELECT * 
 			FROM 
@@ -336,7 +381,7 @@
 				AND pwd = <cfqueryparam value="#arguments.pwd#" cfsqltype="cf_sql_varchar">
 		</cfquery>
 		
-		<cfif local.getUser.recordCount EQ 1 >
+		<cfif local.getUser.recordCount>
 			<cfset session.userid = local.getUser.userId />
 			<cfset session.username = local.getUser.userName />
 			<cfset session.role = local.getUser.role />
@@ -347,7 +392,6 @@
 			<cflocation url="task28_index.cfm" />
 		<cfelse>
 			<cflocation url="task28_login.cfm?error=1" addtoken="false">
-			
 		</cfif>
 	</cffunction>
 	
@@ -404,6 +448,45 @@
 		</cfquery>
 		<cflocation url="task28_dash.cfm">
 
+	</cffunction>
+	
+	<cffunction name="task28PageDetails" returnType="query" access="public">
+		<cfif not structKeyExists(session, "userid")>
+			<cflocation url="task28_login.cfm">
+		</cfif>
+		
+		<cfquery name="local.getPage" datasource="cfTask">
+			SELECT * 
+			FROM 
+				page 
+			WHERE 
+				pageid = <cfqueryparam value="#url.pageid#" cfsqltype="cf_sql_integer">
+		</cfquery>
+		
+		<cfreturn local.getPage />
+	</cffunction>
+	
+	<cffunction name="task28Delete" access="public" returnType="query">
+		<cfquery name="local.getPages" datasource="cfTask">
+			SELECT * FROM page
+		</cfquery>	
+		
+		<cftry>
+			<cfif structKeyExists(url, "delete") AND url.delete EQ "true" >
+				<cfquery name="local.deleteRow" datasource="cfTask">
+					DELETE FROM 
+						page 
+					WHERE 
+						pageid = <cfqueryparam value="#url.pageid#" cfsqltype="cf_sql_integer">
+				</cfquery>
+				<cflocation url="task28_dash.cfm">
+			</cfif>
+		<cfcatch>
+			<cfdump var="#cfcatch#" />
+		</cfcatch>
+		</cftry>
+		
+		<cfreturn local.getPages />
 	</cffunction>
 
 </cfcomponent>

@@ -1,3 +1,13 @@
+<cfscript>
+	if(NOT structKeyExists(session, "logIn")) {
+		location(url="task27script.cfm")
+	}
+	if (structKeyExists(url, "logout") AND url.logout EQ "true") {
+		structClear(session);
+		location(url="task27script.cfm");
+	}
+</cfscript>
+
 <html>
 	<head>
 		<title>Welcome Page</title>
@@ -8,9 +18,3 @@
 		<button><a href="task27script_welcome.cfm?logout=true">Logout</a></button>
 	</body>
 </html>
-<cfscript>
-	if (structKeyExists(url, "logout") AND url.logout EQ "true") {
-		structClear(session);
-		location(url="task27script.cfm");
-	}
-</cfscript>

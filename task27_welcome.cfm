@@ -1,3 +1,6 @@
+<cfif NOT structKeyExists(session, "logIn")>
+	<cflocation url="task27.cfm" />
+</cfif>
 <html>
 	<head>
 		<title>Welcome Page</title>

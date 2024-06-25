@@ -4,7 +4,7 @@
 		<cfset result = task28CFC.task28AddPage(form.pagename, form.pagedesc) />
 		<cfdump var="#result#" />
 	</cfif>
-<cfcatch><cfdump var="#cfcatch#" abort/></cfcatch>
+<cfcatch><cfdump var="#cfcatch#"/></cfcatch>
 </cftry>
 
 <!DOCTYPE html>

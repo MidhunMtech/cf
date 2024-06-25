@@ -1,10 +1,16 @@
+<cftry>
+	<cfif structKeyExists(url, "pageid") >
+		<cfset task28CFC = createObject("component", "component.taskTag") />
+		<cfset getPage = task28CFC.task28PageDetails() />
+	</cfif>
+<cfcatch><cfdump var="#cfcatch#" abort/></cfcatch>
+</cftry>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Detail Page</title>
 	</head>
 	<body>
-		<cfinclude template="task28_editTable.cfm" />
 		<cfoutput>
 			<h1>#getPage.pagename#</h1>
 			<p>#getPage.pageDesc#</p>

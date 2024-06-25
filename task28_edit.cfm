@@ -1,13 +1,10 @@
 <cftry>
-	<cfif structKeyExists(form, "submit") >
+	<cfif structKeyExists(url, "pageid") >
 		<cfset task28CFC = createObject("component", "component.taskTag") />
-		<cfset result = task28CFC.task28Edit(form.pageName, form.pageDesc, form.pageid) />
-		<cfdump var="#result#" />
+		<cfset getPage = task28CFC.task28PageDetails() />
 	</cfif>
 <cfcatch><cfdump var="#cfcatch#" abort/></cfcatch>
 </cftry>
-
-<cfinclude template="task28_editTable.cfm" />
 <!DOCTYPE html>
 <html>
 	<head>
@@ -22,5 +19,11 @@
 		</form>	
 	</body>
 </html>
-
-
+<cftry>
+	<cfif structKeyExists(form, "submit") >
+		<cfset task28CFC = createObject("component", "component.taskTag") />
+		<cfset result = task28CFC.task28Edit(form.pageName, form.pageDesc, form.pageid) />
+		<cfdump var="#result#" />
+	</cfif>
+<cfcatch><cfdump var="#cfcatch#" abort/></cfcatch>
+</cftry>

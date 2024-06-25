@@ -1,4 +1,5 @@
-<cfinclude template="task23Include.cfm">
+<cfinvoke component="component.taskTag" method="table" returnvariable="positions">
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -15,7 +16,7 @@
 			<select id="drop" name="position">
 				<option value=""></option>		
 				<cfloop query="positions">
-					<cfoutput><option value="#positions.positions#" >#positions.positions#</option></cfoutput>
+					<cfoutput><option value="#positions.ID#" >#positions.positions#</option></cfoutput>
 				</cfloop>
 			</select><br><br>
 			
@@ -32,7 +33,7 @@
 			<input type="text" id="Portfolio" name="Portfolio" value="http://"><br><br>
 			
 			<label for="resumeId">Attach a Copy of Your Resume</label><br>
-			<input type="file" name="resume" id="resumeId"><br>
+			<input type="file" name="resume" id="resumeId" required><br>
 			<caption>Word or PDF Documents Only</caption><br><br>
 			
 			
@@ -71,7 +72,7 @@
 <cftry>
 	<cfif structKeyExists(form, "submit")>
 		<cfset task23CFC = createObject("component", "component.taskTag") />
-		<cfset result = task23CFC.task23(form.position, form.relocate, form.datepicker, form.Portfolio, form.resume, form.dollars, form.cents, form.fname, form.lname, form.emailId, form.phone) />
+		<cfset result = task23CFC.task23(form = #form#) />
 		
 		<cfdump var="#result#" />
 	</cfif>
